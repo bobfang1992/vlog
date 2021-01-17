@@ -72,4 +72,37 @@ public:
 
 答案是第二种，也就是我们说的 open addressing，而且 Google 用的就是最简单的 linear probing。那么为什么这样写出来的哈希表比较快呢？给大家一点提示-->从硬件的角度考虑考虑？
 
-答案是 cache，
+答案是缓存，我们都知道如果我们的程序如果是顺序处理连续的内存，那么 CPU 会把我们正在处理的内存附近的内容读到他自己的缓存当中，下次如果 CPU 需要处理已经在缓存中的内容时，它就不需要从系统的主存重新读取相同的内容。
+![latency](https://i.stack.imgur.com/a7jWu.png)
+因为 Google 的哈希表用没有使用链表，而是采用了 open addressing+用一个 array 保存所有的键值对的方案，所以它的 performance 才远好于使用了传统的基于链表的实现。
+
+那么 std::unordered_map 是不是可以改成这种实现呢？答案是暂时不行：如果我们看 STL 的文档，那么我们会发现 unordered_map 把它内部试用 buckets+linked list 的细节也暴露在了它的 API 当中。
+
+> > Hyrum's Law:
+> > With a sufficent number of users of an API, it does not matter what you promise in the contract, all observable behaviors of you syhstem will be depended on by somebody
+
+# 问题
+
+那么 Google flat_hash_map 是不是没有缺点呢？Pointer Invalidation。提一句。
+
+# 更深一点
+
+对我们普通程序员了解这些有什么用呢：
+
+- junior： cache matters! use continous data structure if possible
+- senior: open source matters! without open source what can we do?
+- all: API design matters, the reason to have an API is to hide implemntation details!
+
+# Fun fact
+
+At every moment:
+
+- 1% cpu is consumed by a C++ hash table
+- 4% RAM is consumed by a C++ hash table
+
+![google_data_center](https://images.adsttc.com/media/images/55e8/90b2/6c9d/b5e4/0f00/0046/slideshow/google_dls_002.jpg?1441304746)
+
+# Reference
+
+- https://www.youtube.com/watch?v=ncHmEUmJZf4&t=1583s
+- https://www.youtube.com/watch?v=fHNmRkzxHWs&t=3255s
