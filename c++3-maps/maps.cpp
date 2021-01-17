@@ -20,7 +20,7 @@ std::vector<int> generate_random_vector(int size) {
   return vec;
 }
 
-vector<int> v = generate_random_vector(1000);
+vector<int> v = generate_random_vector(2500);
 
 static void BM_MapSolution_Duplicate(benchmark::State &state) {
   MapSolution s;
