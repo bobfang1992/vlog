@@ -1,0 +1,8 @@
+[requires]
+gtest/1.10.0
+benchmark/1.5.2
+abseil/20200923.2 
+robin-hood-hashing/3.9.1
+
+[generators]
+cmake
